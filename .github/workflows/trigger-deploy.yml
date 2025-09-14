@@ -20,14 +20,14 @@ on:
 jobs:
   trigger-deploy:
     runs-on: ubuntu-latest
-    if: github.event_name == "push" || (github.event_name == "pull_request" && github.event.pull_request.merged == true)
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
     
     steps:
     - name: Trigger deployment
       uses: peter-evans/repository-dispatch@v3
       with:
         token: ${{ secrets.REPO_DISPATCH_TOKEN }}
-        repository: ${{ secrets.APP_REPO_NAME }}
+        repository: ${{ vars.APP_REPO_NAME }}
         event-type: content-updated
         client-payload: |
           {

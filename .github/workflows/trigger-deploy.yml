@@ -3,19 +3,9 @@ name: Trigger Deploy
 on:
   push:
     branches: [ main, master ]
-    paths:
-      - "blog/**"
-      - "docs/**"
-      - "img/**"
-      - "authors.yml"
   pull_request:
     types: [closed]
     branches: [ main, master ]
-    paths:
-      - "blog/**"
-      - "docs/**"
-      - "img/**"
-      - "authors.yml"
 
 jobs:
   trigger-deploy:

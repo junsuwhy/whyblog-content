@@ -1,0 +1,17 @@
+admin:
+  name: 管理員
+  title: 網站管理員
+  url: https://github.com/admin
+  image_url: https://github.com/admin.png
+
+developer:
+  name: 開發者
+  title: 軟體工程師
+  url: https://github.com/developer
+  image_url: https://github.com/developer.png
+
+author:
+  name: 作者
+  title: 內容撰寫者
+  url: https://example.com
+  image_url: https://via.placeholder.com/150

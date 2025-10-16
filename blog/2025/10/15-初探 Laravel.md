@@ -3,7 +3,6 @@ slug: laravel-newer
 title: 初探 Laravel
 authors:
   - admin
-tags:
 ---
 
 在 104, Cake 看了一輪，凡是在找 PHP 的工作，八成以上都要 Laravel 的經驗，所以看來還是要學一下 Laravel 了。

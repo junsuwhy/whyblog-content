@@ -1,17 +1,20 @@
 ---
 slug: laravel-newer
 title: 初探 Laravel
-authors: [admin]
-tags: [歡迎, 介紹]
+authors:
+  - admin
+tags:
 ---
 
 在 104, Cake 看了一輪，凡是在找 PHP 的工作，八成以上都要 Laravel 的經驗，所以看來還是要學一下 Laravel 了。
 
 現在可以搭配 AI 來學習真的很方便，學習程式最快的做法就是實作，我可以請 AI 很快給我想要的功能，但把我想學的部份留空下來讓我自己進行，很快能學到一個主題知識所需具備的基礎技能。
 
+<!-- truncate -->
+
 ---
 
-Laravel 的一些基礎：
+Laravel 的一些基礎觀念：
 
 * Laravel 在 CMD 的指令中靠 artisan 指令來執行各種語法，包括資料庫升級 `migrate`、快速建立各個程式的模板`make`等等。
 * 採 MVC 架構，Model 層採 ORM ，View 層使用容易上手快速結合 html 的 Blade ，C 用的看起來是自己的 Controller。

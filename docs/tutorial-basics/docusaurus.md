@@ -29,3 +29,11 @@ title: "小歪歪"
 * description
 * last_update
 
+## MDX 格式
+
+Docusaurus 支援可以寫 react 和 jsx 的 MDX 文件檔，這讓網站可以透過 AI 餵很多互動式的內容，可以參考[官方這份文件](https://docusaurus.io/docs/markdown-features/react)。
+
+MDX 目前實測有這些要點：
+* 頁首用一個 Markdown 的大標題作頁面名稱
+* 使用 js 撰寫的元件要有 import 或 export 前綴（請 claude 寫出來的沒有）
+* 可用 `docusaurus start` 驗證 render 對不對（通常會掛在 `npmm run start`指令下）

@@ -1,0 +1,577 @@
+# 選擇排序演算法
+
+import React, { useState, useEffect, useRef } from 'react';
+
+export const styles = {
+  container: {
+    fontFamily: '"Microsoft JhengHei", Arial, sans-serif',
+    lineHeight: 1.6,
+    color: '#333',
+    maxWidth: '1200px',
+    margin: '0 auto',
+    padding: '20px',
+    backgroundColor: 'white',
+    borderRadius: '10px',
+    boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
+    marginBottom: '30px'
+  },
+  heading: {
+    color: '#2c3e50',
+    textAlign: 'center',
+    marginBottom: '30px',
+    fontSize: '2.2em'
+  },
+  subheading: {
+    color: '#3498db',
+    borderBottom: '2px solid #3498db',
+    paddingBottom: '5px',
+    marginTop: '25px'
+  },
+  algorithmInfo: {
+    backgroundColor: '#f8f9fa',
+    padding: '20px',
+    borderRadius: '8px',
+    marginBottom: '20px'
+  },
+  controlsContainer: {
+    marginBottom: '20px',
+    display: 'flex',
+    gap: '10px',
+    flexWrap: 'wrap',
+    alignItems: 'center'
+  },
+  input: {
+    flexGrow: 1,
+    padding: '10px',
+    border: '2px solid #bdc3c7',
+    borderRadius: '5px',
+    fontSize: '16px'
+  },
+  button: {
+    backgroundColor: '#3498db',
+    color: 'white',
+    border: 'none',
+    padding: '10px 20px',
+    borderRadius: '5px',
+    cursor: 'pointer',
+    fontSize: '16px',
+    transition: 'background-color 0.3s'
+  },
+  buttonSecondary: {
+    backgroundColor: '#95a5a6'
+  },
+  contentFlex: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    gap: '20px'
+  },
+  codeSection: {
+    flex: 1,
+    minWidth: '300px',
+    width: '48%'
+  },
+  visualizationSection: {
+    flex: 1,
+    minWidth: '300px',
+    width: '48%'
+  },
+  pre: {
+    backgroundColor: '#f0f0f0',
+    padding: '15px',
+    borderRadius: '5px',
+    overflowX: 'auto',
+    position: 'relative',
+    height: '300px',
+    maxHeight: '300px'
+  },
+  code: {
+    fontFamily: 'Consolas, Monaco, "Andale Mono", monospace',
+    color: '#333',
+    lineHeight: 1.5
+  },
+  currentLine: {
+    backgroundColor: '#ffff99',
+    display: 'inline-block',
+    width: '100%'
+  },
+  arrayVisualization: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: '20px',
+    marginBottom: '20px',
+    flexWrap: 'wrap',
+    gap: '10px',
+    minHeight: '70px'
+  },
+  arrayElement: {
+    width: '50px',
+    height: '50px',
+    lineHeight: '50px',
+    textAlign: 'center',
+    backgroundColor: '#3498db',
+    color: 'white',
+    borderRadius: '5px',
+    fontSize: '18px',
+    transition: 'all 0.5s ease',
+    position: 'relative'
+  },
+  currentElement: {
+    backgroundColor: '#e74c3c'
+  },
+  minElement: {
+    backgroundColor: '#2ecc71'
+  },
+  sortedElement: {
+    backgroundColor: '#9b59b6'
+  },
+  explanation: {
+    marginTop: '20px',
+    padding: '15px',
+    backgroundColor: '#f0f8ff',
+    borderRadius: '5px',
+    borderLeft: '4px solid #3498db'
+  },
+  legend: {
+    display: 'flex',
+    gap: '15px',
+    marginTop: '15px',
+    marginBottom: '15px',
+    flexWrap: 'wrap'
+  },
+  legendItem: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '5px'
+  },
+  legendColor: {
+    width: '20px',
+    height: '20px',
+    borderRadius: '3px'
+  },
+  speedControl: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
+    marginLeft: 'auto'
+  },
+  statusBox: {
+    padding: '15px',
+    marginTop: '15px',
+    marginBottom: '15px',
+    borderRadius: '5px',
+    backgroundColor: '#f8f9fa',
+    borderLeft: '4px solid #3498db',
+    fontWeight: 'bold'
+  },
+  stepButton: {
+    marginLeft: '10px',
+    padding: '10px 15px'
+  }
+};
+
+// 媒體查詢可以通過CSS文件或CSS-in-JS庫實現
+// 這裡僅作示例，在Docusaurus中應使用CSS模塊或樣式庫
+
+export const SelectionSortVisualizer = () => {
+  const [currentArray, setCurrentArray] = useState([64, 25, 12, 22, 11]);
+  const [sortingSteps, setSortingSteps] = useState([]);
+  const [currentStep, setCurrentStep] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(false);
+  const [speed, setSpeed] = useState(3);
+  const [arrayInput, setArrayInput] = useState("64, 25, 12, 22, 11");
+  const [explanation, setExplanation] = useState("點擊「開始排序」來觀察選擇排序的執行過程。");
+  const [statusText, setStatusText] = useState("準備就緒，請輸入數字並點擊「開始排序」按鈕。");
+  const [currentCodeLine, setCurrentCodeLine] = useState(0);
+  
+  const sortingIntervalRef = useRef(null);
+  const originalCode = `def selection_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        min_index = i
+        for j in range(i + 1, n):
+            if arr[j] < arr[min_index]:
+                min_index = j
+        arr[i], arr[min_index] = arr[min_index], arr[i]  # 交換位置
+
+# 測試範例
+array = [64, 25, 12, 22, 11]
+selection_sort(array)
+print(array)  # 輸出：[11, 12, 22, 25, 64]`;
+
+  // 初始化
+  useEffect(() => {
+    initializeDisplay();
+  }, []);
+
+  // 清理定時器
+  useEffect(() => {
+    return () => {
+      if (sortingIntervalRef.current) {
+        clearInterval(sortingIntervalRef.current);
+      }
+    };
+  }, []);
+
+  const initializeDisplay = () => {
+    const parsedArray = arrayInput.split(',').map(item => parseInt(item.trim())).filter(num => !isNaN(num));
+    
+    // 最多顯示10個元素
+    const limitedArray = parsedArray.length > 10 ? parsedArray.slice(0, 10) : parsedArray;
+    
+    if (parsedArray.length > 10) {
+      setStatusText("為了更好的視覺效果，最多顯示10個元素。");
+    }
+    
+    setCurrentArray(limitedArray);
+    setArrayInput(limitedArray.join(', '));
+    setSortingSteps([]);
+    setCurrentStep(0);
+    setExplanation("點擊「開始排序」來觀察選擇排序的執行過程。");
+    setCurrentCodeLine(0);
+  };
+
+  const generateSortingSteps = () => {
+    const arr = [...currentArray];
+    const n = arr.length;
+    const steps = [];
+    
+    // 添加初始步驟
+    steps.push({
+      array: [...arr],
+      i: -1,
+      j: -1,
+      minIndex: -1,
+      sortedIndex: -1,
+      explanation: "開始排序。我們將從左到右，找出最小的元素並將其放在正確的位置。",
+      codeLineNumber: 0
+    });
+    
+    for (let i = 0; i < n; i++) {
+      let minIndex = i;
+      
+      // 添加外層循環開始的步驟
+      steps.push({
+        array: [...arr],
+        i: i,
+        j: -1,
+        minIndex: minIndex,
+        sortedIndex: i - 1,
+        explanation: `外層循環 i = ${i}：尋找從位置 ${i} 開始的未排序部分中的最小元素。`,
+        codeLineNumber: 2
+      });
+      
+      // 初始設置最小值
+      steps.push({
+        array: [...arr],
+        i: i,
+        j: -1,
+        minIndex: minIndex,
+        sortedIndex: i - 1,
+        explanation: `初始設置位置 ${i} 的元素 ${arr[i]} 為最小元素。`,
+        codeLineNumber: 3
+      });
+      
+      for (let j = i + 1; j < n; j++) {
+        // 添加內層循環的步驟
+        steps.push({
+          array: [...arr],
+          i: i,
+          j: j,
+          minIndex: minIndex,
+          sortedIndex: i - 1,
+          explanation: `比較位置 ${j} 的元素 ${arr[j]} 與當前最小元素 ${arr[minIndex]}（位置 ${minIndex}）。`,
+          codeLineNumber: 4
+        });
+        
+        if (arr[j] < arr[minIndex]) {
+          minIndex = j;
+          steps.push({
+            array: [...arr],
+            i: i,
+            j: j,
+            minIndex: minIndex,
+            sortedIndex: i - 1,
+            explanation: `找到新的最小元素 ${arr[j]} 在位置 ${j}。`,
+            codeLineNumber: 5
+          });
+        }
+      }
+      
+      // 如果最小元素不是當前元素，則交換
+      if (minIndex !== i) {
+        steps.push({
+          array: [...arr],
+          i: i,
+          j: -1,
+          minIndex: minIndex,
+          sortedIndex: i - 1,
+          explanation: `內層循環結束。最小元素是位置 ${minIndex} 的 ${arr[minIndex]}，將與位置 ${i} 的元素 ${arr[i]} 交換。`,
+          codeLineNumber: 6
+        });
+        
+        // 執行交換
+        [arr[i], arr[minIndex]] = [arr[minIndex], arr[i]];
+        
+        steps.push({
+          array: [...arr],
+          i: i,
+          j: -1,
+          minIndex: -1,
+          sortedIndex: i,
+          explanation: `交換後，位置 ${i} 已經有正確的元素 ${arr[i]}。`,
+          codeLineNumber: 6
+        });
+      } else {
+        steps.push({
+          array: [...arr],
+          i: i,
+          j: -1,
+          minIndex: -1,
+          sortedIndex: i,
+          explanation: `位置 ${i} 的元素 ${arr[i]} 已經是最小元素，不需要交換。`,
+          codeLineNumber: 6
+        });
+      }
+    }
+    
+    // 添加最終步驟
+    steps.push({
+      array: [...arr],
+      i: -1,
+      j: -1,
+      minIndex: -1,
+      sortedIndex: n - 1,
+      explanation: "排序完成！陣列現在已按照遞增順序排列。",
+      codeLineNumber: 7
+    });
+    
+    return steps;
+  };
+
+  const showCurrentStep = () => {
+    if (currentStep >= sortingSteps.length) {
+      clearInterval(sortingIntervalRef.current);
+      setIsAutoPlaying(false);
+      setStatusText("排序完成！");
+      return;
+    }
+    
+    const step = sortingSteps[currentStep];
+    setCurrentArray(step.array);
+    setExplanation(step.explanation);
+    setCurrentCodeLine(step.codeLineNumber);
+    setStatusText(`步驟 ${currentStep + 1}/${sortingSteps.length}`);
+  };
+
+  const handleStartButtonClick = () => {
+    if (isAutoPlaying) {
+      // 暫停排序
+      clearInterval(sortingIntervalRef.current);
+      setIsAutoPlaying(false);
+    } else {
+      // 如果是第一次按下開始或已經重置
+      if (sortingSteps.length === 0 || currentStep >= sortingSteps.length) {
+        // 生成排序步驟
+        const newSteps = generateSortingSteps();
+        setSortingSteps(newSteps);
+        setCurrentStep(0);
+      }
+      
+      // 開始自動播放
+      const speedValue = 6 - speed; // 翻轉速度值，使得滑桿向右為快
+      sortingIntervalRef.current = setInterval(() => {
+        setCurrentStep(prevStep => {
+          const nextStep = prevStep + 1;
+          
+          if (nextStep >= sortingSteps.length) {
+            clearInterval(sortingIntervalRef.current);
+            setIsAutoPlaying(false);
+            return prevStep;
+          }
+          
+          return nextStep;
+        });
+      }, speedValue * 300);
+      
+      setIsAutoPlaying(true);
+    }
+  };
+
+  const handleResetButtonClick = () => {
+    if (sortingIntervalRef.current) {
+      clearInterval(sortingIntervalRef.current);
+    }
+    setIsAutoPlaying(false);
+    initializeDisplay();
+  };
+
+  const handleStepButtonClick = () => {
+    if (sortingSteps.length === 0) {
+      const newSteps = generateSortingSteps();
+      setSortingSteps(newSteps);
+      setCurrentStep(0);
+    } else if (currentStep < sortingSteps.length) {
+      setCurrentStep(prevStep => prevStep + 1);
+    }
+  };
+
+  // 每當currentStep變化時更新顯示
+  useEffect(() => {
+    if (sortingSteps.length > 0 && currentStep < sortingSteps.length) {
+      showCurrentStep();
+    }
+  }, [currentStep, sortingSteps]);
+
+  // 渲染程式碼，高亮當前行
+  const renderCode = () => {
+    const codeLines = originalCode.split('\n');
+    return codeLines.map((line, index) => (
+      <div key={index} style={index === currentCodeLine ? styles.currentLine : {}}>
+        {line}
+      </div>
+    ));
+  };
+
+  // 渲染陣列元素
+  const renderArrayElements = () => {
+    if (!sortingSteps.length || currentStep >= sortingSteps.length) {
+      return currentArray.map((value, index) => (
+        <div key={index} style={styles.arrayElement}>
+          {value}
+        </div>
+      ));
+    }
+    
+    const step = sortingSteps[currentStep];
+    
+    return step.array.map((value, index) => {
+      let elementStyle = { ...styles.arrayElement };
+      
+      if (index <= step.sortedIndex) {
+        elementStyle = { ...elementStyle, ...styles.sortedElement };
+      } else if (index === step.j) {
+        elementStyle = { ...elementStyle, ...styles.currentElement };
+      } else if (index === step.minIndex) {
+        elementStyle = { ...elementStyle, ...styles.minElement };
+      }
+      
+      return (
+        <div key={index} style={elementStyle}>
+          {value}
+        </div>
+      );
+    });
+  };
+
+  return (
+    <div style={styles.container}>
+      <h1 style={styles.heading}>選擇排序演算法（Selection Sort）</h1>
+      
+      <div style={styles.algorithmInfo}>
+        <h2 style={styles.subheading}>選擇排序演算法介紹</h2>
+        <p><strong>使用情境：</strong>當你需要將一組數字按照遞增或遞減順序排列時，選擇排序是一種簡單但效率較低的排序方法，適合用來學習基本排序概念。</p>
+        
+        <h2 style={styles.subheading}>概念：</h2>
+        <ol>
+          <li>從陣列中找到最小的元素，並將其與第一個元素交換。</li>
+          <li>在剩下的未排序部分中，找到最小的元素，與第二個元素交換。</li>
+          <li>重複這個過程，直到整個陣列都排序完成。</li>
+        </ol>
+        
+        <h2 style={styles.subheading}>效能：</h2>
+        <ul>
+          <li><strong>時間複雜度：</strong>O(n²)，因為每次都需要遍歷未排序的部分來找到最小值。</li>
+          <li><strong>空間複雜度：</strong>O(1)，因為排序是在原陣列上進行，不需要額外的記憶體。</li>
+        </ul>
+      </div>
+      
+      <h2 style={styles.subheading}>視覺化演示</h2>
+      
+      <div style={styles.controlsContainer}>
+        <input
+          type="text"
+          value={arrayInput}
+          onChange={(e) => setArrayInput(e.target.value)}
+          style={styles.input}
+          placeholder="請輸入數字，用逗號分隔（例如：64, 25, 12, 22, 11）"
+        />
+        <button 
+          onClick={handleStartButtonClick} 
+          style={styles.button}
+        >
+          {isAutoPlaying ? "暫停" : (currentStep >= sortingSteps.length ? "開始排序" : "繼續排序")}
+        </button>
+        <button 
+          onClick={handleResetButtonClick} 
+          style={{...styles.button, ...styles.buttonSecondary}}
+        >
+          重置
+        </button>
+        
+        <div style={styles.speedControl}>
+          <label htmlFor="speed">速度：</label>
+          <input
+            type="range"
+            id="speed"
+            min="1"
+            max="5"
+            value={speed}
+            onChange={(e) => setSpeed(parseInt(e.target.value))}
+          />
+        </div>
+      </div>
+      
+      <div style={styles.legend}>
+        <div style={styles.legendItem}>
+          <div style={{...styles.legendColor, backgroundColor: '#3498db'}}></div>
+          <span>未排序</span>
+        </div>
+        <div style={styles.legendItem}>
+          <div style={{...styles.legendColor, backgroundColor: '#e74c3c'}}></div>
+          <span>當前比較元素</span>
+        </div>
+        <div style={styles.legendItem}>
+          <div style={{...styles.legendColor, backgroundColor: '#2ecc71'}}></div>
+          <span>當前最小值</span>
+        </div>
+        <div style={styles.legendItem}>
+          <div style={{...styles.legendColor, backgroundColor: '#9b59b6'}}></div>
+          <span>已排序</span>
+        </div>
+      </div>
+      
+      <div style={styles.statusBox}>{statusText}</div>
+      
+      <div style={styles.contentFlex}>
+        <div style={styles.codeSection}>
+          <h3>程式碼</h3>
+          <pre style={styles.pre}>
+            <code style={styles.code}>
+              {renderCode()}
+            </code>
+          </pre>
+        </div>
+        
+        <div style={styles.visualizationSection}>
+          <h3>演算法視覺化</h3>
+          <div style={styles.arrayVisualization}>
+            {renderArrayElements()}
+          </div>
+          <div style={styles.explanation}>{explanation}</div>
+          <div style={{marginTop: '15px', textAlign: 'center'}}>
+            <button
+              onClick={handleStepButtonClick}
+              style={{...styles.button, ...styles.stepButton}}
+              disabled={isAutoPlaying || (sortingSteps.length > 0 && currentStep >= sortingSteps.length)}
+            >
+              下一步 ▶
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+
+<SelectionSortVisualizer />

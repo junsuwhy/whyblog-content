@@ -1,0 +1,14 @@
+{
+  "position": 5,
+  "label": "演算法",
+  "collapsible": true,
+  "collapsed": false,
+  "className": "red",
+  "link": {
+    "type": "generated-index",
+    "title": "演算法"
+  },
+  "customProps": {
+    "description": "這是一個測試的分類"
+  }
+}

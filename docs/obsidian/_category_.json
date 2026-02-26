@@ -1,0 +1,10 @@
+{
+  "position": 20,
+  "label": "Obsidian / 知識管理",
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "title": "Obsidian / 知識管理"
+  }
+}

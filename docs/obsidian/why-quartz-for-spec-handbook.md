@@ -13,7 +13,7 @@ tags: [obsidian, quartz, docs, knowledge-base]
 
 我後來選擇的解法是：用 **Obsidian** 寫內容、用 **Quartz** 把它變成一個結構化的文件站。
 
-範例（我自己的案例）：<https://junsuwhy.github.io/FHIR-docs/>
+範例（我自己的案例）：[https://junsuwhy.github.io/FHIR-docs/](https://junsuwhy.github.io/FHIR-docs/)
 
 ---
 
@@ -103,7 +103,7 @@ tags: [obsidian, quartz, docs, knowledge-base]
 
 ## 5) 實例：FHIR-docs（我怎麼用它做「主題百科」）
 
-案例：<https://junsuwhy.github.io/FHIR-docs>
+案例：[https://junsuwhy.github.io/FHIR-docs](https://junsuwhy.github.io/FHIR-docs)
 
 這個站我想達成的效果很明確：把一堆容易散成零碎筆記的概念，整理成「讀者可沿路看懂」的百科式結構。
 

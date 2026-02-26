@@ -1,5 +1,6 @@
 ---
 title: 為什麼我選 Quartz 做規格手冊（而不是其他工具）
+sidebar_label: Quartz 做規格手冊
 sidebar_position: 1
 tags: [obsidian, quartz, docs, knowledge-base]
 ---
